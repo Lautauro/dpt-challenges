@@ -12,9 +12,6 @@
  * cards and then pass it to the next player.
  * 4. Before play starts, determine by vote if equal cards are a loss or correct guess.
  *
- * Heads/tails:
- * As above, save that instead of cards, the guessing is done around coin flips.
- *
  */
 
 #include <ctype.h>
@@ -26,7 +23,9 @@
 #define LOWER 0
 #define HIGHER 1
 #define RANDOM_NUMBER_MAX 100
-// #define POINTS 10 // TODO
+#define PLAYERS_LIMIT 10
+#define ROUNDS_LIMITS 10
+#define POINT 10
 
 unsigned int random_uint(unsigned int limit);
 bool random_bool();
@@ -59,16 +58,18 @@ int main() {
     bool equalAreLoss, correctAnswer;
     unsigned int numberOfPlayers, actualPlayer = 1, numberOfRounds, round = 1, randomNumber, previousNumber;
 
+    unsigned int playerPoints[PLAYERS_LIMIT];
+
     printf("\n@:=:@ SETTINGS @:=:@\n\n");
 
     printf("Equal cards are a loss? ");
     equalAreLoss = get_bool_answer();
 
     printf("Number of players ");
-    numberOfPlayers = get_uint_answer(1, 5);
+    numberOfPlayers = get_uint_answer(1, PLAYERS_LIMIT);
 
     printf("Number of rounds ");
-    numberOfRounds = get_uint_answer(1, 15);
+    numberOfRounds = get_uint_answer(1, ROUNDS_LIMITS);
 
     /*
      * Print options
@@ -99,7 +100,7 @@ int main() {
             printf("Player %d turn.\n\n", actualPlayer);
 
             previousNumber = randomNumber = random_uint(RANDOM_NUMBER_MAX);
-            printf("Your first number is:\t%d\n\n", randomNumber);
+            printf("Your first number is: %d.\n\n", randomNumber);
 
             do {
                 randomNumber = random_uint(RANDOM_NUMBER_MAX);
@@ -129,6 +130,7 @@ int main() {
                  */
 
                 if (correctAnswer) {
+                    playerPoints[actualPlayer-1] += POINT;
                     printf("\nCorrect!\nThe number was:   %d\n", randomNumber);
                 } else {
                     printf("\nIncorrect!\nThe number was: %d\n", randomNumber);
@@ -145,6 +147,20 @@ int main() {
         actualPlayer = 1;
         ++round;
     }
+
+    /*
+     * Scoreboard
+     */
+
+    printf("@:=:@ SCOREBOARD @:=:@\n\n");
+
+    int i;
+
+    for (i = 0; i < numberOfPlayers; ++i) {
+        printf("Player %d: %dp\n", i, playerPoints[i]);
+    }
+
+    enter_to_continue();
 
     return 0;
 }
