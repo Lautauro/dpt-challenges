@@ -6,3 +6,7 @@ Because I think it could give me a great understanding of how a computer works. 
 
 ## How are you learning it?
 I'm reading ["The C programming language (K&R)"](https://en.wikipedia.org/wiki/The_C_Programming_Language).
+
+## Source?
+
+[https://better-dpt-roll.github.io/](https://better-dpt-roll.github.io/)
